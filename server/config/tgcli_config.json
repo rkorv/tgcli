@@ -1,0 +1,8 @@
+{
+    "token": "",
+    "auth": {
+        "mode": "userlist",
+        "users": [],
+        "password": "strong_password"
+    }
+}

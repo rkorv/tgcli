@@ -1,0 +1,8 @@
+FROM rkorv/tgcli
+
+COPY ./toolbox/ /home/toolbox
+RUN apt update && apt install -y inotify-tools gcc && \
+    cd /home/toolbox/ && pip3 install --no-cache-dir . && \
+    rm -rf /home/toolbox && apt remove -y gcc && apt autoremove -y
+
+WORKDIR /workspace

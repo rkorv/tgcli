@@ -1,0 +1,6 @@
+schedule==1.1.0
+psutil==5.8.0
+GPUtil==1.4.0
+matplotlib==3.3.4
+watchdog==2.1.3
+parsedatetime==2.6
