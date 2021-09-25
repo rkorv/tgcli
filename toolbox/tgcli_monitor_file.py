@@ -49,7 +49,7 @@ class Handler(PatternMatchingEventHandler):
 def run_onchange(args):
     handler = Handler()
     full_path = os.path.abspath(args.filepath)
-    handler.patterns.append(os.path.basename(full_path))
+    handler.patterns.append(os.path.realpath(full_path))
 
     observer = Observer()
     observer.schedule(handler, os.path.dirname(full_path), recursive=False)
