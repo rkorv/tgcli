@@ -4,9 +4,9 @@ Send messages and files to telegram and wait for replies directly from the termi
 
 This project was created to help developers who have to monitor system or ML models for long hours :) You can create a telegram bot to monitor and control your server directly from your phone.
 
-<!-- <p align="center">
+<p align="center">
   <img src="https://drive.google.com/uc?export=view&id=1X5NaU2CfzrftbKsKFSUAofGCbsFEWVhF" />
-</p> -->
+</p>
 
 # QUICK INSTALLATION
 0. Create telegram bot ([telegram docs](https://core.telegram.org/bots#6-botfather))
