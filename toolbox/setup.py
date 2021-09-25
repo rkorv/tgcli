@@ -13,5 +13,5 @@ setup(
             "tgcli_monitor_tail=tgcli_monitor_tail:main",
         ]
     },
-    install_requires=["parsedatetime", "watchdog"],
+    install_requires=["parsedatetime", "watchdog", "schedule"],
 )
