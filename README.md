@@ -5,7 +5,7 @@ Send messages and files to telegram and wait for replies directly from the termi
 This project was created to help developers who have to monitor system or ML models for long hours :) You can create a telegram bot to monitor and control your server directly from your phone.
 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1X5NaU2CfzrftbKsKFSUAofGCbsFEWVhF" />
+  <img width=700px src="https://drive.google.com/uc?export=view&id=18V751lLm5cx-FoRoC3ueOAdLjl5eoN5e" />
 </p>
 
 # QUICK INSTALLATION
@@ -23,14 +23,14 @@ This project was created to help developers who have to monitor system or ML mod
 
 2. Send message
     ```bash
-    $ docker run --rm --it --network host rkorv/tgcli:latest tgcli "Hi TGCLI"
+    $ docker run --rm -it --network host rkorv/tgcli:latest tgcli "Hi TGCLI"
     ```
 
     OR without docker (for python>=3.6):
     ```bash
     $ git clone https://github.com/rkorv/tgcli
     $ cd tgcli/tgcli && pip install --no-cache-dir .
-    $ tgcli "Hi TGCLI!"
+    $ tgcli "Hi TGCLI"
     ```
 
 # USE CASES
