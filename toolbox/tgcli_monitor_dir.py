@@ -8,6 +8,13 @@ from watchdog.events import FileSystemEventHandler
 import tgcli
 
 
+def _send_file(filepath, text):
+    with open(filepath, "rb") as f:
+        return tgcli.send(
+            text, filename=os.path.basename(filepath), data=f.read()
+        )
+
+
 class Handler(FileSystemEventHandler):
     patterns = []
 
@@ -16,11 +23,11 @@ class Handler(FileSystemEventHandler):
         if event.is_directory:
             return None
         elif event.event_type == "created":
-            tgcli.send_file(
+            _send_file(
                 event.src_path, "File '%s' was created..." % event.src_path
             )
         elif event.event_type == "modified":
-            tgcli.send_file(
+            _send_file(
                 event.src_path, "File '%s' was changed..." % event.src_path
             )
 
@@ -37,12 +44,20 @@ def run_onchange(args):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    description_str = """
+Send files from directory on change.
+
+Examples:
+    $ tgcli_monitor_dir ./my_dir
+
+"""
+    parser = argparse.ArgumentParser(
+        description=description_str,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
 
     parser.add_argument(
-        "--dirpath",
-        "-d",
-        required=True,
+        "dirpath",
         type=str,
         help="Path to directory",
     )

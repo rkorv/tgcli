@@ -1,9 +1,0 @@
-FROM python:3.6-slim
-
-COPY ./api/ /home/api
-COPY ./server/ /home/server
-RUN cd /home/api/ && pip3 install --no-cache-dir . && rm -rf /home/api && \
-    apt update && apt install -y gcc && cd /home/server/ && \
-    pip3 install --no-cache-dir . && rm -rf /home/server && \
-    apt remove -y gcc && apt autoremove -y && \
-    mkdir /workspace && echo "" > /workspace/tgcli_database.json

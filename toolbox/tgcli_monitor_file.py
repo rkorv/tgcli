@@ -11,11 +11,18 @@ import tgcli
 from utils import str_to_interval
 
 
+def _send_file(filepath, text):
+    with open(filepath, "rb") as f:
+        return tgcli.send(
+            text, filename=os.path.basename(filepath), data=f.read()
+        )
+
+
 def run_interval(args):
     interval = str_to_interval(args.interval)
     main_scheduler = schedule.Scheduler()
     main_scheduler.every(interval).seconds.do(
-        tgcli.send_file,
+        _send_file,
         filepath=args.filepath,
         text="File '%s' on interval '%s'" % (args.filepath, args.interval),
     )
@@ -34,7 +41,7 @@ class Handler(PatternMatchingEventHandler):
         if event.is_directory:
             return None
         elif event.event_type == "created" or event.event_type == "modified":
-            tgcli.send_file(
+            _send_file(
                 event.src_path, "File '%s' was changed..." % event.src_path
             )
 
@@ -53,22 +60,33 @@ def run_onchange(args):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    description_str = """
+Send file on interval.
+
+Examples:
+    $ tgcli_monitor_file ./my_file.txt 10m
+
+# On change:
+    $ tgcli_monitor_file ./my_file.txt
+
+"""
+    parser = argparse.ArgumentParser(
+        description=description_str,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
 
     parser.add_argument(
-        "--filepath",
-        "-f",
-        required=True,
+        "filepath",
         type=str,
         help="Path to file",
     )
     parser.add_argument(
         "interval",
         nargs="?",
-        default="30m",
+        default="onchange",
         type=str,
         help="""You can use 'onchange' here or interval in human format.
-        ex. '10m', '1h 30m', '1m 30s'""",
+        ex. '10m', '1h 30m', '1m 30s' (Default: 'onchange')""",
     )
 
     args = parser.parse_args()

@@ -6,9 +6,9 @@ setup(
     version="1.0",
     description="TGCLI server - receive messages from tgcli and forward to telegram bot.",
     entry_points={"console_scripts": ["tgcli_server=tgcli_server:main"]},
-    py_modules=["tgcli_server"],
     packages=["."],
     install_requires=[
+        "schedule",
         "python-telegram-bot",
         "easydict",
         "parsedatetime",

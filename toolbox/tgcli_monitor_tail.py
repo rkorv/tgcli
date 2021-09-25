@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import os
 import time
 
 import schedule
@@ -10,6 +11,10 @@ from utils import str_to_interval
 
 
 def _publish_tail(filepath, lines):
+    if not os.path.isfile(filepath):
+        print("[ERROR] no such file '%s'" % filepath)
+        return
+
     with subprocess.Popen(
         ["tail", "-n", str(lines), filepath],
         stdout=subprocess.PIPE,
@@ -20,16 +25,27 @@ def _publish_tail(filepath, lines):
         if line:
             text += line.decode("utf-8") + "\n"
 
-    tgcli.send_text("Tail for file '%s':\n-----\n%s" % (filepath, text))
+    tgcli.send(
+        text="Tail for file '```%s```':\n---\n```\n%s\n```" % (filepath, text),
+        markdown=True,
+    )
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    description_str = """
+Send tail of file.
+
+Examples:
+    $ tgcli_monitor_tail ./logs.txt 10m -l 30
+
+"""
+    parser = argparse.ArgumentParser(
+        description=description_str,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
 
     parser.add_argument(
-        "--filepath",
-        "-f",
-        required=True,
+        "filepath",
         type=str,
         help="Path to file",
     )
@@ -51,6 +67,10 @@ def main():
     args = parser.parse_args()
 
     interval = str_to_interval(args.interval)
+    if os.path.isdir(args.filepath):
+        print("[ERROR] '%s' This is a directory!" % args.filepath)
+        return
+
     main_scheduler = schedule.Scheduler()
     main_scheduler.every(interval).seconds.do(
         _publish_tail, filepath=args.filepath, lines=args.lines
