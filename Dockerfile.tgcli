@@ -2,6 +2,7 @@ FROM python:3.6-slim
 
 COPY ./ /home
 RUN cd /home/tgcli/ && pip3 install --no-cache-dir . && \
-    cd /home/server/ && \
+    apt update && apt install -y gcc && cd /home/server/ && \
     pip3 install --no-cache-dir . && cd /home/toolbox/ && \
-    pip3 install --no-cache-dir . && rm -rf /home/*
+    pip3 install --no-cache-dir . && rm -rf /home/* && \
+    apt remove -y gcc && apt autoremove -y
